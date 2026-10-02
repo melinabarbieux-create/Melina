@@ -1,0 +1,16 @@
+# Dependances des TP (module 1 et 2) : `uv run ...` les installe au premier lancement.
+# L'API complete (RAG, embeddings, FastAPI) : requirements.txt.
+[project]
+name = "nidbuyer-base"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "google-genai==2.25.0",
+    "pydantic==2.13.5",
+    "requests==2.32.3",
+    "python-dotenv==1.0.1",
+    "mcp>=1.10,<2",   # v2 renomme FastMCP en MCPServer : m1_mcp.py est ecrit pour la v1
+]
+
+[tool.uv]
+package = false

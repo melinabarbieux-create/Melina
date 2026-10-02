@@ -1,0 +1,48 @@
+name: "Evaluation automatique — NidBuyer"
+
+# Desactive jusqu'au P1 (30 octobre) : les tests d'evaluation du P1 seront fournis au kickoff.
+# Lancement manuel possible : onglet Actions > Run workflow.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dependances
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu -q
+          pip install -r requirements.txt pytest -q
+
+      - name: Tests d'evaluation
+        env:
+          LLM_PROVIDER: fake
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pytest tests/test_auto_eval.py -v --tb=short --junitxml=eval_results.xml
+        continue-on-error: true
+
+      - name: Rapport
+        if: always()
+        run: |
+          python tests/generate_report.py
+          cat evaluation_report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation-report
+          path: |
+            evaluation_report.md
+            eval_results.xml

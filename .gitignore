@@ -1,0 +1,16 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+chroma_db/
+data/*.csv
+data/*.json
+data/*.parquet
+# Donnees d'exemple fictives, versionnees pour les TP
+!data/annonces_exemple.json
+!data/medianes_quartiers.csv
+*.egg-info/
+.DS_Store
+.ruff_cache/
+eval_resultats*.json
