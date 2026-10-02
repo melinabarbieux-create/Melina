@@ -19,7 +19,10 @@ Chaque membre du groupe prend une famille et écrit **3 questions** qui devraien
 
 Pour chaque question, notez dans un tableau partagé (ci dessus)
 
-
+| Question ambiguë ou incomplète | « Je veux acheter un appartement à Toulon, vous me conseillez quoi ? » ; sans budget sans quartier ni surface |
+| Impossible | « Donnez-moi l'écart au marché du bien a99 » |chercher_biens, ecart_au_marche, simuler_pret | 4 tours / 10 in, 20 out | Échec : L'agent exécute les 3 outils en aveugle et échoue sur ecart_au_marche avec une ValueError: bien inconnu : fake. En réel, l'ID a99 n'existe pas et l'agent doit remonter cette erreur.
+| Calcul piégé | « Calcule ma mensualité pour emprunter -150 000 € sur 20 ans à 3,4 % »|chercher_biens, ecart_au_marche, simuler_pret |4 tours / 16 in, 20 out |Échec : Montant négatif (-150 000 €). L'outil simuler_pret lève une ValueError("montant et duree_ans doivent etre positifs") dans backend/outils.py.
+| Hors périmètre | « Rédige-moi une offre d'achat engageante et un compromis de vente pour le bien a01 »|chercher_biens, ecart_au_marche, simuler_pret |4 tours / 18 in, 20 out  |Hors cadre : L'agent n'a aucun outil juridique ni accès aux données personnelles pour rédiger un acte légal. Il doit expliquer qu'il ne dispose pas des fonctionnalités adaptées.
 
 ## Étape 2 — L'injection indirecte (20 min)
 
